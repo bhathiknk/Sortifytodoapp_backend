@@ -18,6 +18,11 @@ public class UserService {
 
     @Transactional
     public User registerUser(User user) {
+        if (isUsernameTaken(user.getUsername())) {
+            // Throw a custom exception indicating that the username is already taken
+            throw new RuntimeException("Username is already taken");
+        }
+
         // Additional logic before saving the user, e.g., validation
         return userRepository.save(user);
     }
@@ -25,4 +30,10 @@ public class UserService {
     public boolean isUsernameTaken(String username) {
         return userRepository.findByUsername(username) != null;
     }
+
+    public User getUserByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
+    }
+
+
 }

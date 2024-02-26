@@ -36,4 +36,22 @@ public class UserController {
         User registeredUser = userService.registerUser(user);
         return ResponseEntity.status(HttpStatus.OK).body("User registered successfully");
     }
+
+    @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
+    public ResponseEntity<String> loginUser(@RequestBody MultiValueMap<String, String> formData) {
+        String username = formData.getFirst("username");
+        String password = formData.getFirst("password");
+
+        User existingUser = userService.getUserByUsernameAndPassword(username, password);
+
+        if (existingUser != null) {
+            // User logged in successfully
+            return ResponseEntity.status(HttpStatus.OK).body("User logged in successfully");
+        } else {
+            // Invalid username or password
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    }
+
 }
+
