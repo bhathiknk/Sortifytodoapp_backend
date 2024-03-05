@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded")
-    public ResponseEntity<String> loginUser(@RequestBody MultiValueMap<String, String> formData) {
+    public ResponseEntity<Integer> loginUser(@RequestBody MultiValueMap<String, String> formData) {
         String username = formData.getFirst("username");
         String password = formData.getFirst("password");
 
@@ -46,12 +46,20 @@ public class UserController {
 
         if (existingUser != null) {
             // User logged in successfully
-            return ResponseEntity.status(HttpStatus.OK).body("User logged in successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(existingUser.getId());
         } else {
             // Invalid username or password
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
+    @GetMapping("/username/{userId}")
+    public ResponseEntity<Map<String, String>> getUsernameById(@PathVariable Integer userId) {
+        String username = userService.getUsernameById(userId);
+        Map<String, String> response = new HashMap<>();
+        response.put("username", username);
+        return ResponseEntity.ok(response);
+    }
+
 
 }
 

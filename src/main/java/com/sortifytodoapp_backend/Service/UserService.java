@@ -35,5 +35,10 @@ public class UserService {
         return userRepository.findByUsernameAndPassword(username, password);
     }
 
+    public String getUsernameById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        return user.getUsername();
+    }
 
 }
