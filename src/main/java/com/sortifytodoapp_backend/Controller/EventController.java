@@ -50,6 +50,7 @@ public class EventController {
         // Convert Event entities to EventDTOs for better control over serialization
         userEvents.forEach(event -> {
             EventDTO eventDTO = new EventDTO();
+            eventDTO.setId(event.getId()); // Include the event ID
             eventDTO.setTitle(event.getTitle());
             eventDTO.setDate(event.getEventDate()); // Use the formatted date string
             eventDTOList.add(eventDTO);
@@ -58,5 +59,15 @@ public class EventController {
         return new ResponseEntity<>(eventDTOList, HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<String> deleteEvent(@PathVariable int eventId) {
+        try {
+            eventService.deleteEvent(eventId);
+            return ResponseEntity.ok("Event deleted successfully");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting event");
+        }
+    }
 }

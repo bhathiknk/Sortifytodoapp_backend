@@ -3,12 +3,21 @@ package com.sortifytodoapp_backend.DTO;
 import java.time.LocalDate;
 
 public class EventDTO {
+    private Integer id;
     private Integer userId;
     private String title;
     private String date;
 
 
     // Constructors, getters, and setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getUserId() {
         return userId;

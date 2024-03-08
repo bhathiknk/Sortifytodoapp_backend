@@ -41,6 +41,14 @@ public class EventService {
 
         return userEvents;
     }
+    public void deleteEvent(int eventId) throws NotFoundException {
+        Event event = getEventById(eventId);
+        eventRepository.delete(event);
+    }
 
+    private Event getEventById(int eventId) throws NotFoundException {
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event not found with id: " + eventId));
+    }
 
 }
