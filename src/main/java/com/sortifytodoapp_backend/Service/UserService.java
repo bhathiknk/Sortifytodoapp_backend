@@ -2,6 +2,7 @@ package com.sortifytodoapp_backend.Service;
 
 import com.sortifytodoapp_backend.Model.User;
 import com.sortifytodoapp_backend.Repository.UserRepository;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +41,12 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         return user.getUsername();
     }
+
+
+    public User getUserById(Integer userId) throws NotFoundException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+    }
+
 
 }
