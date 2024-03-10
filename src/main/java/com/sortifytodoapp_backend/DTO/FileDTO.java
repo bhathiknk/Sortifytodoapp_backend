@@ -1,11 +1,20 @@
 package com.sortifytodoapp_backend.DTO;
 
 public class FileDTO {
+    private Integer id;
     private String fileName;
     private String fileType;
     private String uploadDate;
 
     // Constructors, getters, and setters
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFileName() {
         return fileName;
