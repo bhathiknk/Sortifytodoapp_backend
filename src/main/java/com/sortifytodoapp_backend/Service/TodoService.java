@@ -6,6 +6,8 @@ import com.sortifytodoapp_backend.Repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TodoService {
     private final TodoRepository todoRepository;
@@ -25,4 +27,11 @@ public class TodoService {
     }
 
     // Add other service methods as needed
+    public List<Todo> getAllTodosByUserId(int userId) {
+        return todoRepository.findAllByUserId(userId);
+    }
+
+    public void deleteTodoById(int id) {
+        todoRepository.deleteById(id);
+    }
 }

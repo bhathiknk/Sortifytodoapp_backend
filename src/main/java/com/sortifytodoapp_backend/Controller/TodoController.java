@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/todos")
 public class TodoController {
@@ -30,5 +32,16 @@ public class TodoController {
     }
 
     // Add other controller methods as needed
+    @GetMapping
+    public ResponseEntity<List<Todo>> getTodosByUserId(@RequestParam int userId) {
+        List<Todo> todos = todoService.getAllTodosByUserId(userId);
+        return new ResponseEntity<>(todos, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTodoById(@PathVariable int id) {
+        todoService.deleteTodoById(id);
+        return ResponseEntity.ok().build();
+    }
 }
 
