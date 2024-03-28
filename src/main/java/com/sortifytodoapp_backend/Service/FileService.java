@@ -5,6 +5,7 @@ import com.sortifytodoapp_backend.Exception.FileStorageException;
 import com.sortifytodoapp_backend.Model.File;
 import com.sortifytodoapp_backend.Model.User;
 import com.sortifytodoapp_backend.Repository.FileRepository;
+import com.sortifytodoapp_backend.Repository.TrashRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -28,9 +29,11 @@ public class FileService {
     private FileRepository fileRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TrashRepository trashRepository;
 
     private final Path storageLocation = Path.of("C:/Projects/Sortifytodoapp_backend/src/main/resources/static/MemoFiles");
-
+    private final Path trashLocation = Path.of("C:/Projects/Sortifytodoapp_backend/src/main/resources/static/Trash");
     public FileDTO saveFile(MultipartFile file, int userId) {
         try {
             User user = userService.getUserById(userId);
@@ -104,6 +107,32 @@ public class FileService {
             }
         } catch (Exception e) {
             throw new FileStorageException("Error fetching file content", e);
+        }
+
+    }
+
+    public void moveFileToTrash(int fileId) {
+        try {
+            File file = fileRepository.findById(fileId)
+                    .orElseThrow(() -> new NotFoundException("File not found"));
+
+            // Save the file data to the Trash table
+            com.sortifytodoapp_backend.Model.Trash trash = new com.sortifytodoapp_backend.Model.Trash();
+            trash.setUserId(file.getUser().getId());
+            trash.setFileName(file.getFileName());
+            trash.setFileType(file.getFileType());
+            trash.setUploadDate(file.getUploadDate());
+            trashRepository.save(trash);
+
+            // Move the file to the Trash directory
+            Path sourcePath = storageLocation.resolve(file.getFileName());
+            Path targetPath = trashLocation.resolve(file.getFileName());
+            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Delete the file from the original table
+            fileRepository.delete(file);
+        } catch (Exception e) {
+            throw new FileStorageException("Error moving file to trash", e);
         }
     }
 
