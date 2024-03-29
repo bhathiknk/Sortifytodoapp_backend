@@ -118,7 +118,7 @@ public class FileService {
 
             // Save the file data to the Trash table
             com.sortifytodoapp_backend.Model.Trash trash = new com.sortifytodoapp_backend.Model.Trash();
-            trash.setUserId(file.getUser().getId());
+            trash.setUser(file.getUser());
             trash.setFileName(file.getFileName());
             trash.setFileType(file.getFileType());
             trash.setUploadDate(file.getUploadDate());

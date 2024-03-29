@@ -1,25 +1,10 @@
-package com.sortifytodoapp_backend.Model;
+package com.sortifytodoapp_backend.DTO;
 
-import javax.persistence.*;
+public class TrashDTO {
 
-@Entity
-@Table(name = "trash")
-public class Trash {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Column(name = "file_name")
     private String fileName;
-
-    @Column(name = "file_type")
     private String fileType;
-
-    @Column(name = "upload_date")
     private String uploadDate;
 
     // Constructors, getters, and setters
@@ -30,14 +15,6 @@ public class Trash {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getFileName() {
@@ -63,4 +40,5 @@ public class Trash {
     public void setUploadDate(String uploadDate) {
         this.uploadDate = uploadDate;
     }
+
 }
