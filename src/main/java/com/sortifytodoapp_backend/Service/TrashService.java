@@ -3,8 +3,10 @@ package com.sortifytodoapp_backend.Service;
 import com.sortifytodoapp_backend.DTO.TrashDTO;
 import com.sortifytodoapp_backend.Exception.FileStorageException;
 
+import com.sortifytodoapp_backend.Model.File;
 import com.sortifytodoapp_backend.Model.Trash;
 import com.sortifytodoapp_backend.Model.User;
+import com.sortifytodoapp_backend.Repository.FileRepository;
 import com.sortifytodoapp_backend.Repository.TrashRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,11 @@ public class TrashService {
     private UserService userService;
     @Autowired
     private TrashRepository trashRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
+
+    private final Path storageLocation = Path.of("C:/Projects/Sortifytodoapp_backend/src/main/resources/static/MemoFiles");
     private final Path trashLocation = Path.of("C:/Projects/Sortifytodoapp_backend/src/main/resources/static/Trash");
     private TrashDTO mapFileToDTO(Trash trash) {
         TrashDTO trashDTO = new TrashDTO();
@@ -64,5 +73,30 @@ public class TrashService {
             throw new FileStorageException("Error fetching file content", e);
         }
 
+    }
+
+    public void restoredeletedfile(int trashId) {
+        try {
+            Trash trash = trashRepository.findById(trashId)
+                    .orElseThrow(() -> new NotFoundException("File not found"));
+
+            // Save the file data to the Trash table
+            com.sortifytodoapp_backend.Model.File file = new com.sortifytodoapp_backend.Model.File();
+            file.setUser(trash.getUser());
+            file.setFileName(trash.getFileName());
+            file.setFileType(trash.getFileType());
+            file.setUploadDate(trash.getUploadDate());
+            fileRepository.save(file);
+
+            // Move the file to the Trash directory
+            Path sourcePath = trashLocation.resolve(trash.getFileName());
+            Path targetPath = storageLocation.resolve(trash.getFileName());
+            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Delete the file from the original table
+            trashRepository.delete(trash);
+        } catch (Exception e) {
+            throw new FileStorageException("Error moving file to trash", e);
+        }
     }
 }
