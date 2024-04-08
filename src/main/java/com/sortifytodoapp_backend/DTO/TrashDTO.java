@@ -7,7 +7,7 @@ public class TrashDTO {
     private String fileType;
     private String uploadDate;
 
-    // Constructors, getters, and setters
+    // getters, and setters
 
     public Integer getId() {
         return id;

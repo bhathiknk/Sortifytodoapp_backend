@@ -25,15 +25,24 @@ import java.util.stream.Collectors;
 
 @Service
 public class FileService {
+
     @Autowired
     private FileRepository fileRepository;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private TrashRepository trashRepository;
 
+    //this path use for save and retrieve memofiles
     private final Path storageLocation = Path.of("C:/Projects/Sortifytodoapp_backend/src/main/resources/static/MemoFiles");
+
+    //this file path use for save and retrive deleted files
     private final Path trashLocation = Path.of("C:/Projects/Sortifytodoapp_backend/src/main/resources/static/Trash");
+
+
+    //this logic make using api get file and file details save to database
     public FileDTO saveFile(MultipartFile file, int userId) {
         try {
             User user = userService.getUserById(userId);
@@ -59,8 +68,8 @@ public class FileService {
         }
     }
 
+    //this logic make to save file to assigened file path
     private void saveFileToStorage(MultipartFile file, String fileName) {
-        // Implement the logic to save the file to the specified storage location
         try {
             Path filePath = storageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -69,6 +78,7 @@ public class FileService {
         }
     }
 
+    //this use for get file data as parameter
     private FileDTO mapFileToDTO(File file) {
         FileDTO fileDTO = new FileDTO();
         fileDTO.setId(file.getId());
@@ -78,6 +88,7 @@ public class FileService {
         return fileDTO;
     }
 
+    //this logic get all file details from database with using mapFileToDTO logic and pass to frontend
     public List<FileDTO> getFilesByUserId(int userId) {
         try {
             User user = userService.getUserById(userId);
@@ -91,6 +102,8 @@ public class FileService {
             return List.of();
         }
     }
+
+    //this logic get specific file using storageLocation path and using the file Id and pass that data to frontend to open file
     public Resource getFileContentById(int id) {
         try {
             File file = fileRepository.findById(id)
@@ -111,6 +124,7 @@ public class FileService {
 
     }
 
+    //this logic use for if user delete file that file data pass to trash table and also pass save file to trashLocation
     public void moveFileToTrash(int fileId) {
         try {
             File file = fileRepository.findById(fileId)

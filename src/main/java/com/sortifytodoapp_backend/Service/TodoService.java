@@ -17,6 +17,7 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
+    //this logic save todo data as this given parameter
     public Todo saveTodo(TodoDTO todoDTO) {
         Todo todo = new Todo();
         todo.setUserId(todoDTO.getUserId());
@@ -26,11 +27,12 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    // Add other service methods as needed
+    // this logic get all saved todo from database
     public List<Todo> getAllTodosByUserId(int userId) {
         return todoRepository.findAllByUserId(userId);
     }
 
+    //this logic delete all todo based on the todo Id
     public void deleteTodoById(int id) {
         todoRepository.deleteById(id);
     }

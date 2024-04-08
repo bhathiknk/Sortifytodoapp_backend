@@ -22,12 +22,18 @@ public class TrashController {
 
     @Autowired
     private TrashService trashService;
+
+
+
+    //this api call to getFilesByUserId login to retrieve save file from database
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<TrashDTO>> getFilesByUserId(@PathVariable int userId) throws ChangeSetPersister.NotFoundException {
         List<TrashDTO> userFiles = trashService.getFilesByUserId(userId);
         return new ResponseEntity<>(userFiles, HttpStatus.OK);
     }
 
+
+    //this api call to getFileContentById logic to find correct file and pass file content to frontend (trash function)
     @GetMapping("/{id}/content")
     public ResponseEntity<Resource> getFileContentById(@PathVariable int id,
                                                        HttpServletResponse response) {
@@ -43,6 +49,7 @@ public class TrashController {
         }
     }
 
+    //this api call to deleteFile logic to delete dta for permanently
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFile(@PathVariable int id) {
         try {

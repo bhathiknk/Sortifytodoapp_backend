@@ -18,6 +18,7 @@ public class MemoService {
         this.memoRepository = memoRepository;
     }
 
+    //this logic use for save memo data using memoDTO assign parameters
     public Memo saveMemo(MemoDTO memoDTO) {
         Memo memo = new Memo();
         memo.setUserId(memoDTO.getUserId());
@@ -25,10 +26,12 @@ public class MemoService {
         return memoRepository.save(memo);
     }
 
+    //this logic get all memo data as list and pass to frontend
     public List<Memo> getAllMemosByUserId(Integer userId) {
         return memoRepository.findAllByUserId(userId);
     }
 
+    //this logic delete all data based on the memo id
     public void deleteMemoById(Integer id) {
         memoRepository.deleteById(id);
     }

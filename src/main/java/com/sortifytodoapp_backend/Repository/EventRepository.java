@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
+
+    //event get using UserId ,event model relationship with the event table many to one
     List<Event> findByUser(User user);
 
 }

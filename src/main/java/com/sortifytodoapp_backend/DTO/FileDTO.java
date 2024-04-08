@@ -6,6 +6,7 @@ public class FileDTO {
     private String fileType;
     private String uploadDate;
 
+
     // Constructors, getters, and setters
 
     public Integer getId() {

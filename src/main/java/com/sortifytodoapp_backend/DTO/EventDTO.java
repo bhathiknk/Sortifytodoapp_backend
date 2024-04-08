@@ -1,7 +1,5 @@
 package com.sortifytodoapp_backend.DTO;
 
-import java.time.LocalDate;
-
 public class EventDTO {
     private Integer id;
     private Integer userId;

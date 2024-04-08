@@ -24,7 +24,6 @@ public class UserService {
             throw new RuntimeException("Username is already taken");
         }
 
-        // Additional logic before saving the user, e.g., validation
         return userRepository.save(user);
     }
 

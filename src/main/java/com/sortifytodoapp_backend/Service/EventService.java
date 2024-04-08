@@ -17,10 +17,11 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
-    private UserService userService; // Assuming you have a UserService
+    private UserService userService;
 
 
 
+    //this logic make event save to database based on userId
     public Event saveEvent(Event event) {
         return eventRepository.save(event);
     }
@@ -35,20 +36,23 @@ public class EventService {
             if (eventDate != null) {
                 event.setEventDateStr(eventDate.format(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
             } else {
-                event.setEventDateStr(""); // Set an empty string or another default value
+                event.setEventDateStr(""); // assigned empty string or another default value
             }
         });
 
         return userEvents;
     }
-    public void deleteEvent(int eventId) throws NotFoundException {
-        Event event = getEventById(eventId);
-        eventRepository.delete(event);
-    }
 
+    //this logic can retrieve all event based on the
     private Event getEventById(int eventId) throws NotFoundException {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event not found with id: " + eventId));
+    }
+
+    //this logic make delete event based on the eventID
+    public void deleteEvent(int eventId) throws NotFoundException {
+        Event event = getEventById(eventId);
+        eventRepository.delete(event);
     }
 
 }

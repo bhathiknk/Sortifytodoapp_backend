@@ -15,13 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-// FileController.java
+// FileController handle entire memofile logic using APIS
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
     @Autowired
     private FileService fileService;
 
+
+
+    //call the uploadFile method for insert files
     @PostMapping("/upload")
     public ResponseEntity<FileDTO> uploadFile(
             @RequestParam("file") MultipartFile file,
@@ -34,12 +37,16 @@ public class FileController {
         }
     }
 
+
+    //this make to call getFilesByUserId method and get all save file details based on the userId
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<FileDTO>> getFilesByUserId(@PathVariable int userId) throws ChangeSetPersister.NotFoundException {
         List<FileDTO> userFiles = fileService.getFilesByUserId(userId);
         return new ResponseEntity<>(userFiles, HttpStatus.OK);
     }
 
+
+    //this make to call getFileContentById method to get file content and pass to frontend
     @GetMapping("/{id}/content")
     public ResponseEntity<Resource> getFileContentById(@PathVariable int id,
                                                        HttpServletResponse response) {
@@ -55,6 +62,8 @@ public class FileController {
         }
     }
 
+
+    //this call to deleteFile method to delete files
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFile(@PathVariable int id) {
         try {

@@ -42,6 +42,7 @@ public class TrashService {
         return trashDTO;
     }
 
+    //this logic get trash file data from backend
     public List<TrashDTO> getFilesByUserId(int userId) {
         try {
             User user = userService.getUserById(userId);
@@ -55,6 +56,8 @@ public class TrashService {
             return List.of();
         }
     }
+
+    //this logic use for get file content using trashLocation saved files
     public Resource getFileContentById(int id) {
         try {
             Trash trash = trashRepository.findById(id)
@@ -75,6 +78,8 @@ public class TrashService {
 
     }
 
+    //this logic use for if user want to restore deleted file
+    //this logic pass file data to file table and file pass to storageLocation again
     public void restoredeletedfile(int trashId) {
         try {
             Trash trash = trashRepository.findById(trashId)

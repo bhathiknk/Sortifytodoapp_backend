@@ -21,6 +21,7 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    //this api call to addTodo logic to save todo data
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<Todo> addTodo(@RequestParam("userId") int userId,
                                         @RequestParam("title") String title,
@@ -31,13 +32,15 @@ public class TodoController {
         return new ResponseEntity<>(savedTodo, HttpStatus.CREATED);
     }
 
-    // Add other controller methods as needed
+
+    //this api call to getTodosByUserId method to get save todo base on the userId
     @GetMapping
     public ResponseEntity<List<Todo>> getTodosByUserId(@RequestParam int userId) {
         List<Todo> todos = todoService.getAllTodosByUserId(userId);
         return new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
+    //this api call to deleteTodoById logic to delete todo data base on the todo id
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodoById(@PathVariable int id) {
         todoService.deleteTodoById(id);

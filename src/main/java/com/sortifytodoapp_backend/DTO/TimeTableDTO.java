@@ -8,7 +8,7 @@ public class TimeTableDTO {
     private String startTime;
     private String endTime;
 
-    // Constructors, getters, setters, and other methods
+    // Constructors, getters, setters
 
 
     public String getDay() {

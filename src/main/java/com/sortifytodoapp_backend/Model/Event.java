@@ -22,6 +22,7 @@ public class Event {
 
     @Transient
     private String eventDateStr;
+
     // Constructors, getters, and setters
 
 

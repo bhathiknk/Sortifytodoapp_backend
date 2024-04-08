@@ -17,10 +17,13 @@ public class TimeTableService {
     @Autowired
     private TimeTableRepository timeTableRepository;
 
+
+    //this logic create for get timetable task based on the userId and day
     public List<TimeTable> getTimeTableByUserIdAndDay(Integer userId, String day) {
         return timeTableRepository.findByUserIdAndDay(userId, day);
     }
 
+    //this logic create for save timetable task to save to database
     public TimeTable addTaskToTimeTable(Integer userId, TimeTableDTO timeTableDTO) {
         TimeTable newTask = new TimeTable(userId,
                 timeTableDTO.getDay(),
@@ -31,6 +34,7 @@ public class TimeTableService {
     }
 
 
+    //this logic delete timetable task based on the this craetaed prameter
     public void deleteTaskFromTimeTable(Integer userId, TimeTableDTO timeTableDTO) {
         // Find the task to delete based on the provided parameters
         Optional<TimeTable> optionalTask = timeTableRepository.findByUserIdAndDayAndTaskNameAndStartTimeAndEndTime(

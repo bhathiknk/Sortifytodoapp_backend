@@ -17,6 +17,8 @@ public class TimeTableController {
     @Autowired
     private TimeTableService timeTableService;
 
+
+    //this api call to getTimeTableByUserIdAndDay method to get saved timetable task data(based on day and userId)
     @GetMapping("/{userId}/{day}")
     public ResponseEntity<List<TimeTable>> getTimeTableByUserIdAndDay(
             @PathVariable Integer userId,
@@ -25,6 +27,7 @@ public class TimeTableController {
         return ResponseEntity.ok(timeTable);
     }
 
+    //this api call to addTaskToTimeTable save timetable tast based on the userId
     @PostMapping("/addTask/{userId}")
     public ResponseEntity<TimeTable> addTaskToTimeTable(
             @PathVariable Integer userId,
@@ -33,6 +36,9 @@ public class TimeTableController {
         return ResponseEntity.ok(newTask);
     }
 
+
+
+    //this api call deleteTaskFromTimeTable methid to delete timetable task
     @DeleteMapping("/deleteTask/{userId}")
     public ResponseEntity<String> deleteTaskFromTimeTable(
             @PathVariable Integer userId,
