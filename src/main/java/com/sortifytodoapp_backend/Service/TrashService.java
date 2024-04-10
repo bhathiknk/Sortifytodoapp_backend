@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,7 +91,7 @@ public class TrashService {
             file.setUser(trash.getUser());
             file.setFileName(trash.getFileName());
             file.setFileType(trash.getFileType());
-            file.setUploadDate(trash.getUploadDate());
+            file.setUploadDate(String.valueOf(LocalDateTime.now()));
             fileRepository.save(file);
 
             // Move the file to the Trash directory

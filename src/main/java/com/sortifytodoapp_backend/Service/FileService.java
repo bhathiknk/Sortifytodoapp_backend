@@ -135,7 +135,7 @@ public class FileService {
             trash.setUser(file.getUser());
             trash.setFileName(file.getFileName());
             trash.setFileType(file.getFileType());
-            trash.setUploadDate(file.getUploadDate());
+            trash.setUploadDate(String.valueOf(LocalDateTime.now()));
             trashRepository.save(trash);
 
             // Move the file to the Trash directory
